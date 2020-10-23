@@ -79,7 +79,7 @@ docker run -it --rm -d -p 8080:8080 \
 yanmingxiao/ratings-web:latest
 
 ```
-## Step 7: How To Remove Docker Images, Containers, and Volumes
+## Step 8: How To Remove Docker Images, Containers, and Volumes
 
 https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes
 
@@ -97,6 +97,6 @@ $ clear
 
 
 
-## Step 8: Docker - Logging
+## Step 9: Docker - Logging
 https://www.tutorialspoint.com/docker/docker_logging.htm
 
