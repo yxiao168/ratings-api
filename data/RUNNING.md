@@ -27,22 +27,30 @@ I want to Execute mongoimport on a Docker Container
 https://stackoverflow.com/questions/49895447/i-want-to-execute-mongoimport-on-a-docker-container
 
 ```
-$ docker container ls
-CONTAINER ID        IMAGE                            COMMAND                  CREATED             STATUS              PORTS                    NAMES
-ed4758a2b70b        yanmingxiao/ratings-web:latest   "docker-entrypoint.s…"   14 minutes ago      Up 14 minutes       0.0.0.0:8080->8080/tcp   gifted_cannon
-2bb6cc71d9cb        yanmingxiao/ratings-api:latest   "docker-entrypoint.s…"   19 minutes ago      Up 19 minutes       0.0.0.0:3000->3000/tcp   flamboyant_hermann
-22930b643b9f        bitnami/mongodb:latest           "/opt/bitnami/script…"   59 minutes ago      Up 59 minutes       27017/tcp                mongodb-server
+$ docker container ps
+CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS         PORTS       NAMES
+5c370c76e5f0   bitnami/mongodb:latest   "/opt/bitnami/script…"   3 minutes ago   Up 3 minutes   27017/tcp   mongodb-server
 
-$ docker exec 22930b643b9f cp items.json /tmp/items.json
 
-$ docker exec 22930b643b9f cp ratings.json /tmp/ratings.json
+$ docker exec 5c370c76e5f0 cp items.json /tmp/
+cp: cannot stat 'items.json': No such file or directory
+$ docker exec 5c370c76e5f0 ls /tmp
+$ docker exec 5c370c76e5f0 ls -a /tmp
+.
+..
+$ ls -l *.json
+-rw-rw-r-- 1 yxiao yxiao  292 Oct 15 19:19 items.json
+-rw-rw-r-- 1 yxiao yxiao 2446 Oct 15 19:19 ratings.json
+-rw-rw-r-- 1 yxiao yxiao  775 Oct 15 19:19 sites.json
 
-$ docker exec 22930b643b9f cp sites.json /tmp/sites.json
-
-$ docker exec 22930b643b9f ls /tmp
+$ docker cp items.json 5c370c76e5f0:/tmp/items.json
+$ docker cp ratings.json 5c370c76e5f0:/tmp/
+$ docker cp sites.json 5c370c76e5f0:/tmp/
+$ docker exec 5c370c76e5f0 ls /tmp
 items.json
 ratings.json
 sites.json
+
 ```
 
 ## Step 5: import data onto the mongodb
@@ -52,7 +60,6 @@ mongoimport --host 127.0.0.1 --db ratingsdb --collection items --type json --fil
 
 $ docker exec 22930b643b9f \
 mongoimport --host 127.0.0.1 --db ratingsdb --collection ratings --type json --file /tmp/ratings.json --jsonArray
-
 
 $ docker exec 22930b643b9f \
 mongoimport --host 127.0.0.1 --db ratingsdb --collection sites --type json --file /tmp/sites.json --jsonArray
