@@ -1,4 +1,4 @@
-# RUNNING-2.md
+# RUNNING-3.md
 
 ## Step 1: launch all docker containers 
 ```
