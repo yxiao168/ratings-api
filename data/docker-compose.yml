@@ -1,16 +1,16 @@
 version: '3.8'
 
 services:
-  networks:
-    app-tier:
+#  networks:
+#    app-tier:
 #      network_mode: "bridge"
 
   db:
     image: 'bitnami/mongodb:latest'
     ports:
       - '27017:27017'
-    networks:
-      - app-tier
+#    networks:
+#      - app-tier
     volumes:
       - 'db_data:/var/lib/mongo'
 
@@ -34,8 +34,8 @@ services:
      depends_on:
        - api
      image: 'yanmingxiao/ratings-web:latest'
-     networks:
-       - app-tier
+#     networks:
+#       - app-tier
      ports:
        - '8080:8080'
      restart: 'always'

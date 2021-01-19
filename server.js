@@ -31,13 +31,15 @@ require('./models/mongo/site');
 mongoose.Promise = global.Promise;
 
 const connectOptions = {
-  useMongoClient: true,
-  autoIndex: false, // Don't build indexes
-  reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
-  reconnectInterval: 500, // Reconnect every 500ms
-  poolSize: 10, // Maintain up to 10 socket connections
-  connectTimeoutMS: 10000, // Give up initial connection after 10 seconds
-  socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+  // useMongoClient: true,
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  // autoIndex: false, // Don't build indexes
+  // reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
+  // reconnectInterval: 500, // Reconnect every 500ms
+  // poolSize: 10, // Maintain up to 10 socket connections
+  // connectTimeoutMS: 10000, // Give up initial connection after 10 seconds
+  // socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
 };
 
 if(process.env.MONGODB_URI == undefined) {
@@ -54,7 +56,8 @@ promise.then(
     var Site = mongoose.model("Site");
 
     // Check if the items are empty, insert mock data
-    Item.count({}, function(err, c) {
+    // Item.count({}, function(err, c) {
+    Item.countDocuments({}, function(err, c) {  
       if(c == 0) {
         console.dir('No items found in the database. Loading data.');
         var itemsMock = require('./data/items.json');
@@ -71,7 +74,8 @@ promise.then(
     });
 
     // Check if the sites are empty, insert mock data
-    Site.count({}, function(err, c) {
+    //Site.count({}, function(err, c) {
+    Site.countDocuments({}, function(err, c) {  
       if(c == 0) {
         console.dir('No sites found in the database. Loading data.');
         var sitesMock = require('./data/sites.json');

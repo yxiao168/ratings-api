@@ -1,4 +1,4 @@
-# running.md
+# RUNNING-1.md
 
 ## Step 1: Create a network
 ```
@@ -12,6 +12,33 @@ $ docker run -d --name mongodb-server \
     --network app-tier \
     bitnami/mongodb:latest
 ```
+
+## Step 1, 2 altogether
+```
+$ ls
+docker-compose.yml  README.md
+$ docker-compose up -d
+Creating network "mongodb_default" with the default driver
+Pulling mongodb (docker.io/bitnami/mongodb:4.4-debian-10)...
+4.4-debian-10: Pulling from bitnami/mongodb
+ff7c165d667c: Pull complete0679d32cd958: Pull completefbb2ace2d362: Pull complete73f542838cc2: Pull complete1797d23d9806: Pull complete7a13987766c3: Pull complete90edc5a7cdc7: Pull complete3332bd3e7412: Pull complete6661c1eb68bc: Pull complete
+88af55bc876f: Pull complete
+4b941c6b9db0: Pull complete817b6333966c: Pull complete
+Digest: sha256:2e2fac656a2126c082d490002d55d75a3b70bce9106df2755f15a0552a3072ed
+Status: Downloaded newer image for bitnami/mongodb:4.4-debian-10
+Creating mongodb_mongodb_1 ... done
+
+$ docker container ls
+CONTAINER ID   IMAGE                           COMMAND                  CREATED              STATUS              PORTS                      NAMES
+5222845e2d29   bitnami/mongodb:4.4-debian-10   "/opt/bitnami/script…"   About a minute ago   Up About a minute   0.0.0.0:27017->27017/tcp   mongodb_mongodb_1
+$ docker rename mongodb_mongodb_1 mongodb
+$ docker container ls
+CONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS         PORTS                      NAMES
+5222845e2d29   bitnami/mongodb:4.4-debian-10   "/opt/bitnami/script…"   3 minutes ago   Up 3 minutes   0.0.0.0:27017->27017/tcp   mongodb
+
+
+```
+
 
 ## Step 3 (optional): Launch your MongoDB client instance
 Finally we create a new container instance to launch the MongoDB client and connect to the server created in the previous step:
@@ -55,14 +82,18 @@ sites.json
 
 ## Step 5: import data onto the mongodb
 ```
-$ docker exec 22930b643b9f \
-mongoimport --host 127.0.0.1 --db ratingsdb --collection items --type json --file /tmp/items.json --jsonArray
+$ docker exec 5222845e2d29 \
+> mongoimport --host 127.0.0.1 --db ratingsdb --collection items --type json --file /tmp/items.json --jsonArray
+2021-01-19T01:20:08.385+0000    connected to: mongodb://127.0.0.1/
+2021-01-19T01:20:08.481+0000    4 document(s) imported successfully. 0 document(s) failed to import.
 
-$ docker exec 22930b643b9f \
-mongoimport --host 127.0.0.1 --db ratingsdb --collection ratings --type json --file /tmp/ratings.json --jsonArray
+$ docker exec 5222845e2d29 \> mongoimport --host 127.0.0.1 --db ratingsdb --collection ratings --type json --file /tmp/ratings.json --jsonArray
+2021-01-19T01:20:31.432+0000    connected to: mongodb://127.0.0.1/
+2021-01-19T01:20:31.556+0000    13 document(s) imported successfully. 0 document(s) failed to import.
 
-$ docker exec 22930b643b9f \
-mongoimport --host 127.0.0.1 --db ratingsdb --collection sites --type json --file /tmp/sites.json --jsonArray
+$ docker exec 5222845e2d29 \> mongoimport --host 127.0.0.1 --db ratingsdb --collection sites --type json --file /tmp/sites.json --jsonArray
+2021-01-19T01:20:53.747+0000    connected to: mongodb://127.0.0.1/
+2021-01-19T01:20:53.855+0000    1 document(s) imported successfully. 0 document(s) failed to import.
 
 ```
 
@@ -77,6 +108,11 @@ $ curl -XGET 0.0.0.0:3000/healthz;echo
 API health check - OK
 ```
 
+## Step 6: launch the ratings-api
+```
+export MONGODB_URI=mongodb://27.0.0.1:27017/ratingsdb
+
+```
 
 ## Step 7: launch the ratings-web
 ```
