@@ -45,3 +45,15 @@ net:
 export MONGODB_URI=mongodb://192.168.1.5:27017/ratingsdb
 ```
 
+On mean stack VM
+```
+
+
+mongoimport --authenticationDatabase admin --db ratingsdb --collection items --type json --file /tmp/items.json --jsonArray --username root --password 1ICVh8dZTbJ9
+
+
+bitnami@debian:~/ratings-api$ export MONGODB_URI=mongodb://127.0.0.1:27017/ratingsdb
+bitnami@debian:~/ratings-api$ npm start
+
+```
+

@@ -5,6 +5,9 @@
 ## Project 
 https://docs.microsoft.com/en-us/learn/modules/aks-workshop/01-introduction
 
+https://github.com/yxiao168/ratings-api
+
+
 
 ### bitnami/mongodb
 https://hub.docker.com/r/bitnami/mongodb
