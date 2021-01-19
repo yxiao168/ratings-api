@@ -41,52 +41,23 @@ $ . ./s3.sh
 
 ```
 
+
+## Step 3: check the ratings-api
 ```
-$ docker container ps
-CONTAINER ID   IMAGE                            COMMAND                  CREATED         STATUS         PORTS                      NAMES
-e7a9610112c8   yanmingxiao/ratings-web:latest   "docker-entrypoint.s…"   5 minutes ago   Up 5 minutes   0.0.0.0:8080->8080/tcp     data_web_1
-68b3a8c9872a   yanmingxiao/ratings-api:latest   "docker-entrypoint.s…"   5 minutes ago   Up 5 minutes   0.0.0.0:3000->3000/tcp     data_api_1
-84304714ae64   bitnami/mongodb:latest           "/opt/bitnami/script…"   5 minutes ago   Up 5 minutes   0.0.0.0:27017->27017/tcp   data_db_1
-
-$ ls -l *.json
--rw-rw-r-- 1 yxiao yxiao  292 Oct 15 19:19 items.json
--rw-rw-r-- 1 yxiao yxiao 2446 Oct 15 19:19 ratings.json
--rw-rw-r-- 1 yxiao yxiao  775 Oct 15 19:19 sites.json
-
-$ docker cp items.json 84304714ae64:/tmp/items.json
-$ docker cp ratings.json 84304714ae64:/tmp/
-$ docker cp sites.json 84304714ae64:/tmp/
-$ docker exec 84304714ae64 ls /tmp
-items.json
-ratings.json
-sites.json
-
-```
-
-
-## Step 3: launch the ratings-api
-```
-docker run -it --rm -d -p 3000:3000 \
---network app-tier \
--e MONGODB_URI=mongodb://mongodb-server:27017/ratingsdb \
-yanmingxiao/ratings-api:latest
-
 $ curl -XGET 0.0.0.0:3000/healthz;echo
 API health check - OK
 ```
 
-## Step 6: launch the ratings-api
+## Step 4: check the ratings-api
 ```
-export MONGODB_URI=mongodb://27.0.0.1:27017/ratingsdb
+Check
+http://127.0.0.1:8080/#/
 
 ```
 
-## Step 7: launch the ratings-web
+## Step 5: launch the ratings-web
 ```
-docker run -it --rm -d -p 8080:8080 \
---network app-tier \
--e API=http://127.0.0.1:3000 \
-yanmingxiao/ratings-web:latest
+http://127.0.0.1:8080/
 
 ```
 ## Step 8: How To Remove Docker Images, Containers, and Volumes
@@ -94,15 +65,7 @@ yanmingxiao/ratings-web:latest
 https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes
 
 ```
-$ docker system prune -a
-
-$ docker container ls
-$ docker container rm 5b165f321cca -f
-
-$ docker system prune -a
-
-$ docker images
-$ clear
+$ ./s8/sh
 ```
 
 
