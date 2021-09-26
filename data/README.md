@@ -1,26 +1,27 @@
-# README.md
+# How to load data into the database
 
+Get the pods
 
+```sh
+oc get pods
+```
 
-## Project 
-https://docs.microsoft.com/en-us/learn/modules/aks-workshop/01-introduction
+Copy the data folder into the mongoDB pod
 
-https://github.com/yxiao168/ratings-api
+```sh
+oc rsync ./data mongodb-1-c8msv:/opt/app-root/src
+```
 
+Connect to the remote shell on the pod
 
+```sh
+oc rsh mongodb-1-c8msv
+```
 
-### bitnami/mongodb
-https://hub.docker.com/r/bitnami/mongodb
+Run the `mongoimport` command to import the JSON data files into the database
 
-
-I want to Execute mongoimport on a Docker Container
-https://stackoverflow.com/questions/49895447/i-want-to-execute-mongoimport-on-a-docker-container
-
-
-### Running
-See "RUNNING.md"
-
-
-### ratings-api
-https://github.com/MicrosoftDocs/mslearn-aks-workshop-ratings-api
-
+```sh
+mongoimport --host 127.0.0.1 --username userN0E --password MulQxIv2Rvy1QVtN --db sampledb --collection items --type json --file data/items.json --jsonArray
+mongoimport --host 127.0.0.1 --username userN0E --password MulQxIv2Rvy1QVtN --db sampledb --collection sites --type json --file data/sites.json --jsonArray
+mongoimport --host 127.0.0.1 --username userN0E --password MulQxIv2Rvy1QVtN --db sampledb --collection ratings --type json --file data/ratings.json --jsonArray
+```
