@@ -26,7 +26,7 @@ The project is forked from [aksworkshop-ratings-api](https://github.com/Microsof
 
 | File/folder               | Description                   |
 |---------------------------|-------------------------------|
-| `0_startMongo.sh`         | Built the API docker on local |
+| `0_build_docker.sh`       | Built the API docker on local
 | `0_install_NPM.sh`        | Install required NPM packages |
 | `1_startMongo.sh`         | Start MongoDB container       |
 | `2_startAPI_container.sh` | Start the API container       |
